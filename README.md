@@ -74,4 +74,4 @@ la partie sera mise à jour sans intervention de l'utilisateur : `3 points`
 
 -----------------
 
-## Total de point: 21/40
+## Total de point: 21/40 | J'ai la moyenne
