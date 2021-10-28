@@ -39,8 +39,13 @@ document.addEventListener('DOMContentLoaded', async (req, res) => {
             console.log(game.name)
             let baliseplayer1 = document.querySelector("#player1")
             let baliseplayer2 = document.querySelector("#player2")
+            let balisetoken1 = document.querySelector("#token1")
+            let balisetoken2 = document.querySelector("#token2")
             baliseplayer1.innerHTML = game.author
             baliseplayer2.innerHTML = game.adversary
+            balisetoken1.innerHTML = game.nbAuthor
+            balisetoken2.innerHTML = game.nbAdversary
+
 
             if(session.userid == game.author || session.userid == game.adversary){
                 if(session.userid == game.author)

@@ -194,6 +194,7 @@ expressApp.post("/creategame", (req, res) => {
     let maPartie = new Game(req.body);
     // On le sauvegarde dans MongoDB
     maPartie.save()
+    res.redirect("betcha/list/list.html")
 })
 
 expressApp.delete("/deletegame/:id", (req, res) => {
