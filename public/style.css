@@ -12,7 +12,7 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     background-color: red;
-    background: linear-gradient(to bottom, rgb(6, 108, 100),  rgb(14, 48, 122));
+    background: linear-gradient(to bottom, rgb(46, 0, 0),  rgba(36, 0, 0));
     width: 800px;
     height: 400px;
     margin: 10% auto;;
@@ -93,7 +93,7 @@
     border: none;
     width: 250px;
     outline: none;
-    background-color: rgb(56, 102, 189);
+    background-color: rgb(36, 0, 0);
   }
   
   
@@ -134,5 +134,5 @@
     border: none;
     width: 250px;
     outline: none;
-    background-color: rgb(56, 189, 149);  
+    background-color: rgb(46, 0, 0);  
   }

@@ -231,6 +231,15 @@ expressApp.get('/adversaryConnected/:id',(req,res)=>{
     })
 })
 
+expressApp.get('/isAuth/:id',(req,res)=>{
+    Game.findOne({"link": "/betcha/game/" + req.params.id},"authorisAuth adversaryisAuth",function(err,gamebdd){
+        if(err){
+            console.log(err)
+        }
+        res.json(gamebdd)
+    })
+})
+
 expressApp.get('/session', (req, res) => {
 
     res.json(req.session)

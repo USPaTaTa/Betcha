@@ -47,13 +47,12 @@ document.addEventListener('DOMContentLoaded', async (req, res) => {
             balisetoken2.innerHTML = game.nbAdversary
 
 
-            if(session.userid == game.author || session.userid == game.adversary){
-                if(session.userid == game.author)
-                {
-                    fetch('/authorConnected/'+ gameURL)
+            if (session.userid == game.author || session.userid == game.adversary) {
+                if (session.userid == game.author) {
+                    fetch('/authorConnected/' + gameURL)
                 }
-                else{
-                    fetch('/adversaryConnected/'+ gameURL)
+                else {
+                    fetch('/adversaryConnected/' + gameURL)
                 }
                 console.log("Vous êtes un joueur")
                 let baliseForm = document.querySelector("#betForm")
@@ -71,19 +70,29 @@ document.addEventListener('DOMContentLoaded', async (req, res) => {
 
             }
 
-            setInterval(function(){
 
-                fetch('/isAuth/' + gameURL).then((AuthData)=>{
-
-                    return AuthData.json()
-
-                }).then(function (resAuthData){
-                    
-                    // if()
-
-                })
-            },10000)
         })
     })
 
 })
+
+function checkisAuth(){
+    setInterval(function () {
+
+        fetch('/isAuth/' + gameURL).then((AuthData) => {
+    
+            return AuthData.json()
+    
+        }).then(function (resAuthData) {
+    
+            if (resAuthData.authorisAuth == true && resAuthData.adversaryisAuth == true) {
+    
+                console.log("tout les participants sont présents")
+    
+            } else {
+                console.log("Aucun participant n'est présent")
+            }
+    
+        })
+    }, 2000)
+}
