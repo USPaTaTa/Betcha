@@ -1,10 +1,17 @@
 # Grille de notation (sur 40 points)
 
 Les users sont stockés en BDD : 1 point
+
 Les mots de passe sont stockés en base de données sous forme hashée+salée avec bcryptjs : 1 point
+
 Les parties sont stockées en BDD : 1 point
+
 Les users ont des parties : 1 point
+
 Une partie appartient à un seul user : 1 point
+
+-----------------
+
 
 chaque participant peut se créer un compte : 2 points
 chaque participant peut s'authentifier : 1 point
