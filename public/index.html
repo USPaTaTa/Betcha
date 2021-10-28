@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <script src="index.js"></script>
+   <link rel="stylesheet" href="style.css">
+   <link rel="icon" href="favicon.png" type="image/png">
+   <link rel="shortcut icon" href="favicon.png" type="image/png">
+   <title>Betcha</title>
+   <style>
+      .img-container {
+         text-align: center;
+      }
+   </style>
+</head>
+
+<body>
+
+   <div class="img-container">
+      <img src="Betcha.png" alt="" srcset="" width=10% height=auto>
+   </div>
+
+   <div class="container">
+      <!--Data or Content-->
+      <div class="box-1">
+         <div class="content-holder">
+            <h2>BETCHA</h2>
+            <button class="button-1" onclick="signup()">Inscription</button>
+            <button class="button-2" onclick="login()">Connexion</button>
+         </div>
+      </div>
+
+
+      <!--Forms-->
+      <div class="box-2">
+         <div class="login-form-container">
+            <h1>Page de connexion</h1>
+            <form action="/signin" method="post" id="signinForm">
+               <input type="text" placeholder="Nom d'utilisateur" class="input-field" id="usernameIn" name="username"
+                  required>
+               <br><br>
+               <input type="password" placeholder="Mot de passe" class="input-field" id="passwdIn" name="password"
+                  required>
+               <br><br>
+               <button class="login-button" type="submit" id="btnconnexion">Connexion</button>
+            </form>
+         </div>
+
+
+         <!--Create Container for Signup form-->
+         <div class="signup-form-container">
+            <h1>Page d'inscription</h1>
+            <form action="/signup" method="post" id="signupForm">
+               <input type="text" placeholder="Nom d'utilisateur" class="input-field" id="usernameUp" name="username"
+                  required>
+               <br><br>
+               <input type="password" placeholder="Mot de passe" class="input-field" id="passwdUp" name="password"
+                  required>
+               <br><br>
+               <button class="signup-button" type="submit" id="btninscription">Inscription</button>
+            </form>
+         </div>
+      </div>
+   </div>
+
+</body>
+
+</html>

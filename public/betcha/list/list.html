@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+	<script src="/betcha/list/list.js"></script>
+	<link rel="icon" href="favicon.png" type="image/png">
+	<link rel="shortcut icon" href="favicon.png" type="image/png">
+	<title>Betcha: Liste des parties</title>
+</head>
+<header>
+	<div>
+		
+		<form action="/logout" method="post" id="logout">
+			<button type="submit" class="btn btn-secondary" id="btnlogout">Déconnexion</button>
+				<a id="usernameID" style="color: forestgreen;"></a>
+		</form>
+	</div>
+
+
+</header>
+
+<body>
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-12 table-responsive">
+				<table class="table table-bordered table-hover table-sortable" id="tab_logic">
+					<thead>
+						<tr>
+							<th class="text-center">
+								Nom
+							</th>
+							<th class="text-center">
+								Auteur
+							</th>
+							<th class="text-center">
+								Adversaire
+							</th>
+							<th class="text-center">
+								État
+							</th>
+							<th class="text-center"
+								style="border-top: 1px solid #ffffff; border-right: 1px solid #ffffff;">
+							</th>
+						</tr>
+					</thead>
+
+					<tbody id="listGame">
+
+					</tbody>
+				</table>
+				<table>
+					<tbody>
+						<form action="/creategame" method="post">
+							<tr id='addr0' data-id="0" class="hidden">
+								<td data-name="name">
+									<input type="text" name='name' placeholder='Nom de la partie' class="form-control"
+										required />
+								</td>
+								<td>
+									<select name="adversary" id="adversarySelect" required>
+										<option value="">Choisir un adversaire</option>
+									</select>
+								</td>
+								<td data-name="del">
+									<button name="de10" class='btn btn-success' id="btnadd"><span aria-hidden="true">Créer une
+											partie</span></button>
+								</td>
+							</tr>
+						</form>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</html>
