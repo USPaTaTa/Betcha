@@ -1,6 +1,4 @@
------------------
 ## Grille de notation BACK (`/33`):
------------------
 
 Les users sont stockés en BDD : `1 point` `FAIT`
 
