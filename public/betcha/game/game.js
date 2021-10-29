@@ -4,6 +4,10 @@ const gameURL = window.location.pathname.split('/').pop()
 
 document.addEventListener('DOMContentLoaded', async (req, res) => {
 
+    if(gameURL == "game.html"){
+        window.location.replace("/")
+    }
+
     fetch('/session').then((userdata) => {
 
         return userdata.json()
@@ -15,11 +19,9 @@ document.addEventListener('DOMContentLoaded', async (req, res) => {
             session = resuser
             session.userid = "Spectateur"
             baliseUsername.innerHTML = session.userid
-            console.log("Pas connecté")
         } else {
-            // console.log(window.location.pathname.split('/').pop())
+
             session = resuser
-            // console.log("url: " + session.url)
 
             console.log(session.userid)
             let baliseUsername = document.querySelector("#usernameID")
@@ -32,19 +34,23 @@ document.addEventListener('DOMContentLoaded', async (req, res) => {
             return gamedata.json()
 
         }).then(function (resgame) {
-
             game = resgame
+            // console.log(game.name)
             let baliseTitle = document.querySelector("#title")
-            baliseTitle.innerHTML = "Betcha: " + game.name
-            console.log(game.name)
+            let baliseTitleGame = document.querySelector("#titleGame")
+            let baliseRound = document.querySelector("#round")
+            let baliseCountdown = document.querySelector("#countdown")
             let baliseplayer1 = document.querySelector("#player1")
             let baliseplayer2 = document.querySelector("#player2")
             let balisetoken1 = document.querySelector("#token1")
             let balisetoken2 = document.querySelector("#token2")
+            baliseTitle.innerHTML = "Betcha: " + game.name
+            baliseTitleGame.innerHTML = "Betcha: " + game.name
+            baliseCountdown.innerHTML = game.countdown
+            baliseRound.innerHTML = "Round: " + game.round
             baliseplayer1.innerHTML = game.author
             baliseplayer2.innerHTML = game.adversary
-            balisetoken1.innerHTML = game.nbAuthor
-            balisetoken2.innerHTML = game.nbAdversary
+
 
 
             if (session.userid == game.author || session.userid == game.adversary) {
@@ -64,11 +70,17 @@ document.addEventListener('DOMContentLoaded', async (req, res) => {
                 baliseBtn.type = "submit"
                 baliseBtn.className = "btn btn-success"
                 baliseBtn.innerText = "Valider"
+                baliseInput.max = 100
+                baliseInput.min = 0
 
                 baliseForm.appendChild(baliseInput)
                 baliseForm.appendChild(baliseBtn)
 
+            }else{
+                balisetoken1.innerHTML = "\n"+ game.nbAuthor
+                balisetoken2.innerHTML = game.nbAdversary
             }
+
 
 
         })

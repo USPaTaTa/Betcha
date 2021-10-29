@@ -16,7 +16,7 @@ const mongoURI = "mongodb://localhost:27017/betcha"
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-}).then(() => console.log("à faire: Multiple session //" + " Connecté au serveur Mongo: " + mongoURI))
+}).then(() => console.log("Connecté au serveur Mongo: " + mongoURI))
     .catch((error) => console.log(error.message))
 
 const usersSchema = new mongoose.Schema({
@@ -27,6 +27,7 @@ const usersSchema = new mongoose.Schema({
 const sessionSchema = new mongoose.Schema({
     session: {
         userid: String,
+        isAuth: Boolean
     }
 })
 
@@ -40,28 +41,9 @@ const gameSchema = new mongoose.Schema({
     nbAdversary: Number,
     authorisAuth: Boolean,
     adversaryisAuth: Boolean,
-    round:{
-        round1: Number,
-        round2: Number,
-        round3: Number,
-        round4: Number,
-        round5: Number,
-        round6: Number,
-        round7: Number,
-        round8: Number,
-        round9: Number,
-        round10: Number,
-        round11: Number,
-        round12: Number,
-        round13: Number,
-        round14: Number,
-        round15: Number,
-        round16: Number,
-        round17: Number,
-        round18: Number,
-        round19: Number,
-        round20: Number,
-    }
+    round: Number,
+    lot: Number,
+    countdown: Number
 })
 
 const store = new mongoDBsession({
@@ -106,7 +88,7 @@ expressApp.post("/signup", (req, res) => {
                             monUtilisateur.save(function (err) {
                                 if (err) { throw err; }
                                 req.session.userid = req.body.username
-                                console.log('Utilisateur ajouté à la bdd');
+                                // console.log('Utilisateur ajouté à la bdd');
 
                                 res.redirect("/betcha/list/list.html")
                             });
@@ -115,7 +97,7 @@ expressApp.post("/signup", (req, res) => {
                 });
             });
         } else {
-            console.log("Cet utilisateur existe déjà")
+            // console.log("Cet utilisateur existe déjà")
             res.redirect("/")
         }
 
@@ -139,18 +121,18 @@ expressApp.post("/signin", (req, res) => {
                         if (err) return handleError(err);
                         bcrypt.compare(req.body.password, userbdd.password, function (err, result) { //Vérification mot de passe
                             if (result) {
-                                console.log("Connexion validé")
+                                // console.log("Connexion validé")
                                 req.session.userid = req.body.username
 
                                 res.redirect("/betcha/list/list.html")
                             } if (!result) {
-                                console.log("Mot de passe incorrect")
+                                // console.log("Mot de passe incorrect")
                                 res.redirect("/")
                             }
                         });
                     });
                 } else {
-                    console.log("Une session est déjà ouverte")
+                    // console.log("Une session est déjà ouverte")
                     req.session.userid = req.body.username
                     res.redirect("/betcha/list/list.html")
                 }
@@ -183,7 +165,9 @@ expressApp.post("/creategame", (req, res) => {
     req.body.nbAdversary = 100
     req.body.authorisAuth = false
     req.body.adversaryisAuth = false
-    // req.round = 0
+    req.body.round = 1
+    req.body.lot = 6
+    req.body.countdown = 30
     fs.copyFile("./public/betcha/game/game.html", "./public/betcha/game/" + randomLink + ".html", (err) => {
         if (err) {
             console.log(err)
@@ -265,7 +249,7 @@ expressApp.get('/games', (req, res) => {
 expressApp.get('/gameinfo/:id', (req, res) => {
 
     // console.log("GAME INFO URL: " + req.params.id)
-    Game.findOne({ 'link': "/betcha/game/" + req.params.id }, 'name author adversary link statut nbAuthor nbAdversary authorisAuth adversaryisAuth', function (err, gamebdd) {
+    Game.findOne({ 'link': "/betcha/game/" + req.params.id }, 'name author adversary link statut nbAuthor nbAdversary authorisAuth adversaryisAuth round countdown lot', function (err, gamebdd) {
 
         res.json(gamebdd)
 

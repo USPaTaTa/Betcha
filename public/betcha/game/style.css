@@ -9,3 +9,22 @@
 .center{
     float:center;
 }
+
+tr,td{
+    content: center;
+    border: 5px solid black;
+    width:150px;
+    height: 100px;
+    color: black;
+    border-radius: 100px;
+}
+
+table{
+    border-collapse: collapse;
+
+    margin-top:150px
+}
+
+.lot{
+    background-color: chartreuse;
+}
