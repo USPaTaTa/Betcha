@@ -200,6 +200,22 @@ expressApp.get('/adversaryConnected/:id', (req, res) => {
     })
 })
 
+expressApp.get('/authorleavegame/:id',(req, res)=>{
+    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "authorisAuth": false }, function (err) {
+        if (err) {
+            console.log(err)
+        }
+    })
+})
+
+expressApp.get('/adversaryleavegame/:id',(req, res)=>{
+    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "adversaryisAuth": false }, function (err) {
+        if (err) {
+            console.log(err)
+        }
+    })
+})
+
 expressApp.get('/isAuth/:id', (req, res) => {
     Game.findOne({ "link": "/betcha/game/" + req.params.id }, "authorisAuth adversaryisAuth", function (err, gamebdd) {
         if (err) {
@@ -209,6 +225,17 @@ expressApp.get('/isAuth/:id', (req, res) => {
     })
 })
 
+expressApp.get('/sendgamecountdown/:id/:countdown', (req, res) => {
+    // console.log("COUNTDOWN:" + req.params.countdown)
+    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "countdown": req.params.countdown }, function (err) {
+        if (err) {
+            console.log(err)
+        }
+    })
+})
+
+
+
 expressApp.get('/session', (req, res) => {
 
     res.json(req.session)
@@ -217,7 +244,7 @@ expressApp.get('/session', (req, res) => {
 
 expressApp.get('/users', (req, res) => {
 
-    User.find({ 'isAuth': true }, 'username', function (err, userbdd) {
+    User.find({}, 'username', function (err, userbdd) {
 
         res.json(userbdd)
 
