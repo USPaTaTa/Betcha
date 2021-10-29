@@ -60,7 +60,6 @@ Si le lot arrive sur l'emplacement d'un joueur, ce joueur remporte le lot (vainq
 
 -----------------
 ## Grille de notation FRONT (`15/24`):
------------------
 
 Il y a un bouton "créer un compte" : `2 points` `FAIT`
 
