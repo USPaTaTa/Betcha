@@ -58,7 +58,7 @@ Les joueurs continuent à parier jusqu'à 20 paris maximum : `1 point`
 
 Si le lot arrive sur l'emplacement d'un joueur, ce joueur remporte le lot (vainqueur), la partie est terminée : `3 points`
 
------------------
+
 ## Grille de notation FRONT (`15/24`):
 
 Il y a un bouton "créer un compte" : `2 points` `FAIT`
