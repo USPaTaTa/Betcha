@@ -22,12 +22,12 @@ mongoose.connect(mongoURI, {
 const usersSchema = new mongoose.Schema({
     username: String,
     password: String,
+    isAuth: Boolean
 });
 
 const sessionSchema = new mongoose.Schema({
     session: {
-        userid: String,
-        isAuth: Boolean
+        userid: String
     }
 })
 
@@ -113,45 +113,30 @@ expressApp.post("/signin", (req, res) => {
             console.log("Cet utilisateur n'existe pas")
             res.redirect("/")
         } else {
-            Session.findOne({ 'userid': req.body.username }, 'userid', function (err, sessionbdd) { //Verification si session ouverte
-                if (err) {
-                    console.log(err)
-                } else if (sessionbdd === null || !userbdd) {
-                    User.findOne({ 'username': req.body.username }, 'username password', function (err, userbdd) {
-                        if (err) return handleError(err);
-                        bcrypt.compare(req.body.password, userbdd.password, function (err, result) { //Vérification mot de passe
-                            if (result) {
-                                // console.log("Connexion validé")
-                                req.session.userid = req.body.username
-
-                                res.redirect("/betcha/list/list.html")
-                            } if (!result) {
-                                // console.log("Mot de passe incorrect")
-                                res.redirect("/")
-                            }
-                        });
-                    });
-                } else {
-                    // console.log("Une session est déjà ouverte")
+            bcrypt.compare(req.body.password, userbdd.password, function (err, result) { //Vérification mot de passe
+                if (result) {
+                    // console.log("Connexion validé")
                     req.session.userid = req.body.username
+
                     res.redirect("/betcha/list/list.html")
+                } if (!result) {
+                    // console.log("Mot de passe incorrect")
+                    res.redirect("/")
                 }
             })
-
         }
-
     });
 })
 
 expressApp.post("/logout", (req, res) => {
 
     req.session.destroy((err) => {
-        if (err) throw err;
-
-        res.redirect('/')
-
+        if (err) {
+            console.log(err)
+        } else {
+            res.redirect("/")
+        }
     });
-
 })
 
 expressApp.post("/creategame", (req, res) => {
@@ -197,27 +182,27 @@ expressApp.delete("/deletegame/:id", (req, res) => {
     })
 })
 
-expressApp.get('/authorConnected/:id',(req,res)=>{
+expressApp.get('/authorConnected/:id', (req, res) => {
 
-    Game.findOneAndUpdate({"link": "/betcha/game/" + req.params.id},{"authorisAuth": true},function (err){
-        if(err){
+    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "authorisAuth": true }, function (err) {
+        if (err) {
             console.log(err)
         }
     })
 })
 
-expressApp.get('/adversaryConnected/:id',(req,res)=>{
+expressApp.get('/adversaryConnected/:id', (req, res) => {
 
-    Game.findOneAndUpdate({"link": "/betcha/game/" + req.params.id},{"adversaryisAuth": true},function (err){
-        if(err){
+    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "adversaryisAuth": true }, function (err) {
+        if (err) {
             console.log(err)
         }
     })
 })
 
-expressApp.get('/isAuth/:id',(req,res)=>{
-    Game.findOne({"link": "/betcha/game/" + req.params.id},"authorisAuth adversaryisAuth",function(err,gamebdd){
-        if(err){
+expressApp.get('/isAuth/:id', (req, res) => {
+    Game.findOne({ "link": "/betcha/game/" + req.params.id }, "authorisAuth adversaryisAuth", function (err, gamebdd) {
+        if (err) {
             console.log(err)
         }
         res.json(gamebdd)
@@ -232,7 +217,7 @@ expressApp.get('/session', (req, res) => {
 
 expressApp.get('/users', (req, res) => {
 
-    User.find({}, 'username', function (err, userbdd) {
+    User.find({ 'isAuth': true }, 'username', function (err, userbdd) {
 
         res.json(userbdd)
 
