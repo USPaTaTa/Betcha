@@ -225,15 +225,38 @@ expressApp.get('/isAuth/:id', (req, res) => {
     })
 })
 
-expressApp.get('/sendgamecountdown/:id/:countdown', (req, res) => {
-    // console.log("COUNTDOWN:" + req.params.countdown)
-    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "countdown": req.params.countdown }, function (err) {
+
+expressApp.get('/sendcountdown/:id/:countdown', (req, res) => {
+
+    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, {"countdown": req.params.countdown}, function (err) {
         if (err) {
             console.log(err)
         }
     })
 })
 
+
+expressApp.get('/sendstatut/:id/:statut', (req, res) => {
+
+    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, {"statut": req.params.statut}, function (err) {
+        if (err) {
+            console.log(err)
+        }
+    })
+})
+
+expressApp.get('/sendround/:id/:round', (req, res) => {
+
+    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, {"round": req.params.round}, function (err) {
+        if (err) {
+            console.log(err)
+        }
+    })
+})
+
+expressApp.post("/bet/:id", (req,res)=>{
+    console.log("url: " + req.params.id)
+})
 
 
 expressApp.get('/session', (req, res) => {
