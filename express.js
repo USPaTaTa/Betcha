@@ -39,6 +39,8 @@ const gameSchema = new mongoose.Schema({
     statut: String,
     nbAuthor: Number,
     nbAdversary: Number,
+    betAuthor: Number,
+    betAdversary: Number,
     authorisAuth: Boolean,
     adversaryisAuth: Boolean,
     round: Number,
@@ -153,6 +155,8 @@ expressApp.post("/creategame", (req, res) => {
     req.body.round = 1
     req.body.lot = 6
     req.body.countdown = 30
+    req.body.betAuthor = 0
+    req.body.betAdversary = 0
     fs.copyFile("./public/betcha/game/game.html", "./public/betcha/game/" + randomLink + ".html", (err) => {
         if (err) {
             console.log(err)
@@ -200,7 +204,7 @@ expressApp.get('/adversaryConnected/:id', (req, res) => {
     })
 })
 
-expressApp.get('/authorleavegame/:id',(req, res)=>{
+expressApp.get('/authorleavegame/:id', (req, res) => {
     Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "authorisAuth": false }, function (err) {
         if (err) {
             console.log(err)
@@ -208,11 +212,42 @@ expressApp.get('/authorleavegame/:id',(req, res)=>{
     })
 })
 
-expressApp.get('/adversaryleavegame/:id',(req, res)=>{
+expressApp.get('/adversaryleavegame/:id', (req, res) => {
     Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "adversaryisAuth": false }, function (err) {
         if (err) {
             console.log(err)
         }
+    })
+})
+
+expressApp.get('/betAuthor/:id/:bet', (req, res) => {
+    Game.findOne({ "link": "/betcha/game/" + req.params.id }, "betAuthor nbAuthor", function (betdata) {
+
+        return betdata.json()
+
+    }).then(function (resbetdata){
+        let updatedToken = resbetdata.nbAuthor - req.params.bet
+        Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "betAuthor": req.params.bet,"nbAuthor": updatedToken})
+    })
+})
+
+expressApp.get('/betAdversary/:id/:bet', (req, res) => {
+    Game.findOne({ "link": "/betcha/game/" + req.params.id }, "nbAdversary", function (betdata) {
+
+        return betdata.json()
+
+    }).then(function (resbetdata){
+        let updatedToken = resbetdata.nbAdversary - req.params.bet
+        Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "betAdversary": req.params.bet,"nbAdversary": updatedToken})
+    })
+})
+
+expressApp.get("/bet/:id", (req, res) => {
+    Game.findOne({ "link": "/betcha/game/" + req.params.id }, "betAuthor betAdversary", function (err, gamebdd) {
+        if (err) {
+            console.log(err)
+        }
+        res.json(gamebdd)
     })
 })
 
@@ -228,7 +263,7 @@ expressApp.get('/isAuth/:id', (req, res) => {
 
 expressApp.get('/sendcountdown/:id/:countdown', (req, res) => {
 
-    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, {"countdown": req.params.countdown}, function (err) {
+    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "countdown": req.params.countdown }, function (err) {
         if (err) {
             console.log(err)
         }
@@ -238,7 +273,7 @@ expressApp.get('/sendcountdown/:id/:countdown', (req, res) => {
 
 expressApp.get('/sendstatut/:id/:statut', (req, res) => {
 
-    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, {"statut": req.params.statut}, function (err) {
+    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "statut": req.params.statut }, function (err) {
         if (err) {
             console.log(err)
         }
@@ -247,17 +282,12 @@ expressApp.get('/sendstatut/:id/:statut', (req, res) => {
 
 expressApp.get('/sendround/:id/:round', (req, res) => {
 
-    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, {"round": req.params.round}, function (err) {
+    Game.findOneAndUpdate({ "link": "/betcha/game/" + req.params.id }, { "round": req.params.round }, function (err) {
         if (err) {
             console.log(err)
         }
     })
 })
-
-expressApp.post("/bet/:id", (req,res)=>{
-    console.log("url: " + req.params.id)
-})
-
 
 expressApp.get('/session', (req, res) => {
 

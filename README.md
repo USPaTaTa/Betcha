@@ -93,7 +93,7 @@ on ne peut pas supprimer une partie dont on est pas le créateur : `1 point` `FA
 
 On voit 11 emplacements contigus : `2 points` `FAIT`
 
-On voit le nom et nombre de jetons des joueurs : `1 point`
+On voit le nom et nombre de jetons des joueurs : `1 point` `FAIT`
 
 On peut miser : `3 points`
 

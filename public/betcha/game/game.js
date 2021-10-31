@@ -2,7 +2,7 @@ const gameURL = window.location.pathname.split('/').pop()
 let session, game, start, gameScript
 let balisecase1, balisecase2, balisecase3, balisecase4, balisecase5, balisecase6, balisecase7, balisecase8, balisecase9, balisecase10, balisecase11, currentLot
 let baliseTitle, baliseTitleGame, baliseRound, baliseCountdown, baliseplayer1, baliseplayer2, balisetoken1, balisetoken2, btnleave, baliseStatut, baliseFooter, round = 1
-let baliseForm, baliseInput, baliseBtn
+let baliseInput
 let ONGOING = false
 let FINISH = false
 
@@ -152,56 +152,30 @@ function checkisAuth() {
 
                 if (session.userid == game.author) { //check si c'est l'auteur de la partie
                     if (game.nbAuthor != 0) { //check si l'auteur lui reste des points
-                        baliseForm = document.createElement("form")
                         baliseInput = document.createElement("input")
-                        baliseBtn = document.createElement("button")
 
-                        baliseForm.action = "/bet/" + gameURL
-                        baliseForm.method = "post"
-                        baliseForm.id = "betForm"
                         baliseInput.type = "number"
                         baliseInput.id = "nbtoken"
                         baliseInput.required = true
                         baliseInput.max = game.nbAuthor
                         baliseInput.min = 0
-                        baliseBtn.type = "submit"
-                        baliseBtn.className = "btn btn-success"
-                        baliseBtn.innerText = "Valider"
+                        baliseInput.className = "text-center"
 
-                        baliseFooter.appendChild(baliseForm)
-                        baliseForm.appendChild(baliseInput)
-                        baliseForm.appendChild(baliseBtn)
-                        baliseForm.submit(function(event){
-                            event.preventDefault()
-                            // setTimeout(() => {  baliseForm.removeChild(baliseBtn) }, 100);
-                        })
+                        baliseFooter.appendChild(baliseInput)
                     }
 
                 } else { // Si ce n'est pas l'auteur alors c'est l'adversaire
                     if (game.nbAdversary != 0) { //check si l'adversaire lui reste des points
-                        baliseForm = document.createElement("form")
                         baliseInput = document.createElement("input")
-                        baliseBtn = document.createElement("button")
 
-                        baliseForm.action = "/bet/" + gameURL
-                        baliseForm.method = "post"
-                        baliseForm.id = "betForm"
                         baliseInput.type = "number"
                         baliseInput.id = "nbtoken"
                         baliseInput.required = true
                         baliseInput.max = game.nbAdversary
                         baliseInput.min = 0
-                        baliseBtn.type = "submit"
-                        baliseBtn.className = "btn btn-success"
-                        baliseBtn.innerText = "Valider"
+                        baliseInput.className = "text-center"
 
-                        baliseFooter.appendChild(baliseForm)
-                        baliseForm.appendChild(baliseInput)
-                        baliseForm.appendChild(baliseBtn)
-                        baliseForm.submit(function(event){
-                            event.preventDefault()
-                            // setTimeout(() => {  baliseForm.removeChild(baliseBtn) }, 100);
-                        })
+                        baliseFooter.appendChild(baliseInput)
                     }
                 }
 
@@ -214,10 +188,8 @@ function checkisAuth() {
 
             }
             if (FINISH) { //Si jeu fini
-                if(session.userid == game.author || session.userid == game.adversary){
-                    baliseForm.removeChild(baliseBtn)
-                    baliseForm.removeChild(baliseInput)
-                    baliseFooter.removeChild(baliseForm)
+                if (session.userid == game.author || session.userid == game.adversary) {
+                    baliseFooter.removeChild(baliseInput)
                 }
                 console.log("EXTINCTION DE LA BOUCLE")
                 baliseStatut.innerHTML = "Partie terminée"
@@ -230,10 +202,8 @@ function checkisAuth() {
             console.log("tout les participant ne sont pas présents")
 
             if (ONGOING && !FINISH) { // Si jeu démarré et non fini
-                if(session.userid == game.author || session.userid == game.adversary){
-                    baliseForm.removeChild(baliseBtn)
-                    baliseForm.removeChild(baliseInput)
-                    baliseFooter.removeChild(baliseForm)
+                if (session.userid == game.author || session.userid == game.adversary) {
+                    baliseFooter.removeChild(baliseInput)
                 }
                 console.log("MISE EN PAUSE DE LA PARTIE")
                 ONGOING = false //définition de la partie sur "en pause"
@@ -270,17 +240,57 @@ function betchaGame() {
         baliseCountdown.innerHTML = baliseCountdown.innerHTML - 1
         game.countdown = baliseCountdown.innerHTML
         game.round = round
-        // if(session.userid == game.author){
-        //     fetch("/sendcountdown/" + gameURL + "/" + game.countdown)
-        // }
+
+        if (session.userid == game.author) {
+            baliseInput.max = game.nbAuthor
+        }
+        if (session.userid == game.adversary) {
+            baliseInput.max = game.nbAdversary
+        }
 
         if (baliseCountdown.innerHTML == 0) {
 
             if (baliseRound.innerHTML != "Round: 21/20") {
+                if (session.userid == game.author) {
+                    if (baliseInput.value == "") {
+                        game.betAuthor = Math.floor(Math.random() * game.nbAuthor) + 1
+                        fetch('/betAdversary/' + gameURL + "/" + game.betAdversary)
+                    } else {
+                        game.betAuthor = baliseInput.innerHTML
+                        fetch('/betAuthor/' + gameURL + "/" + game.betAuthor)
+                    }
+                    console.log("PARI: " + baliseInput.value)
+                } else {
+                    if (baliseInput.value == "") {
+                        game.betAdversary = Math.floor(Math.random() * game.nbAdversary) + 1
+                        fetch('/betAdversary/' + gameURL + "/" + game.betAdversary)
+                    } else {
+                        game.betAdversary = baliseInput.value
+                        fetch('/betAdversary/' + gameURL + "/" + game.betAdversary)
+                    }
+                    console.log("PARI: " + baliseInput.value)
+                }
+                // setTimeout(() => {
+                //     fetch('/bet/' + gameURL).then((betdata) => {
+
+                //         return betdata.json()
+
+                //     }).then(function (resbetdata) {
+                //         if (resbetdata.betAuthor == "") {
+                //             game.betAuthor = Math.floor(Math.random() * game.nbAuthor) + 1;
+                //         }
+                //         if (resbetdata.betAdversary == "") {
+
+                //         }
+
+
+                //     })
+                // }, 2000);
+
                 round++
                 baliseRound.innerHTML = "Round: " + round + "/20"
                 game.round = round
-                baliseCountdown.innerHTML = 5
+                baliseCountdown.innerHTML = 30
             } else {
                 // FIN DE PARTIE, QUI A GAGNÉ ?
                 baliseRound.innerHTML = "Round: 20/20"
